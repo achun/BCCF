@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html><head>
+    <meta charset="utf-8">
+    <title>Online css beautifier</title>
+	<script src="jquery.js"></script>
+    <script src="bccf.js"></script>
+	<script src="bccp.js"></script>
+    <style>
+* {
+    margin: 0;
+    padding: 0;
+}
+.ie6 div {
+    display: none
+}
+.ie6 #ie6-go-away {
+    display: block !important;
+}
+img {
+    border: 0;
+    display: block;
+    vertical-align: baseline;
+}
+#blurb {
+    width: 260px;
+    float: right;
+    margin-top: -35px; /* pull up by the amount of non-floated content in
+                          the sibling container. */
+}
+#beauty {
+    border-top: 1px solid #f6f6f6;
+    margin-left: 5px;
+    margin-right: 270px;
+}
+body {
+    background: #eee;
+}
+body, button, select, label {
+    font:13px/1.231 arial, sans-serif;
+    *font-size:small;
+}
+select, label {
+    font-size: 12px;
+}
+body, html {
+    height: 100%;
+    color: #333;
+}
+textarea {
+    color: #444;
+    height: 150px;
+    width: 100%;
+    border: 0;
+    font-family: Monaco, Consolas, monospace;
+}
+
+fieldset {
+    border: 0;
+}
+ul, li {
+    list-style: none;
+}
+a {
+    color: #36d;
+}
+
+fieldset.textarea-wrap {
+    background: white;
+    display: block;
+    margin-left: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    margin-right: 270px;
+    border: 1px solid #ccc;
+    border-right: 1px solid #666;
+    border-bottom: 1px solid #666;
+    padding: 5px;
+}
+button#submit {
+    margin-top: 5px;
+    margin-bottom: 5px;
+    height: 30px;
+    line-height: 28px;
+    width: 100%;
+    border: 1px solid #aaa;
+    border-left: 1px solid #666;
+    border-top: 1px solid #666;
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+    -moz-background-clip: padding; -webkit-background-clip: padding-box; background-clip: padding-box;
+    background: #ccc;
+    background-image: -webkit-gradient(linear, left top, left bottom, from(#EEEEEE), to(#CCCCCC));
+    background-image: -webkit-linear-gradient(top, #EEEEEE, #CCCCCC);
+    background-image:    -moz-linear-gradient(top, #EEEEEE, #CCCCCC);
+    background-image:     -ms-linear-gradient(top, #EEEEEE, #CCCCCC);
+    background-image:      -o-linear-gradient(top, #EEEEEE, #CCCCCC);
+    background-image:         linear-gradient(top, #EEEEEE, #CCCCCC);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorStr='#EEEEEE', EndColorStr='#CCCCCC');
+    cursor: pointer;
+    color: #444;
+}
+button#submit em {
+    font-size: 11px;
+    font-style: normal;
+    color: #999;
+}
+
+label {
+    cursor: pointer;
+}
+
+#options {
+    margin-top: 5px;
+    margin-bottom: 15px;
+}
+#options li {
+    margin-bottom: 4px;
+    font-size: 90%;
+}
+#options select {
+    font:13px/1.231 arial, sans-serif;
+    padding: 0 5px;
+    width: 220px;
+}
+#tabsize {
+    margin-top: 2px;
+}
+#brace-style {
+    margin-bottom: 6px;
+}
+
+#blurb h2 {
+    font-size: 12px;
+    font-weight: bold;
+    color: #555;
+}
+#blurb p {
+    line-height: 140%;
+    font-size: 11px;
+    margin-right: 16px;
+    margin-bottom: 11px;
+}
+
+#footer {
+    font-size: 11px;
+    line-height: 140%;
+}
+
+#blurb p.me-me-me {
+    margin-bottom: 4px;
+}
+#blurb p.contributors {
+    color: #666;
+}
+#blurb #uses li {
+    font-size: 11px;
+    margin-bottom: 4px;
+    margin-right: 4px;
+}
+#blurb #uses li.writeme {
+    font-style: normal;
+    color: #888;
+    margin-bottom: 30px;
+    line-height: 130%;
+}
+
+@media (max-width: 500px) {
+    #beauty {
+        position: relative;
+        margin: 0 5px;
+        height: 80%;
+    }
+    fieldset.textarea-wrap {
+        top: 40px;
+        bottom: 0;
+        margin: 0;
+    }
+    #blurb {
+        float: none;
+        margin: 0 auto;
+    }
+}
+    </style>
+<script>
+
+var log = (window.console && console.dir) ?
+function() {
+	"use strict";
+	for (var i = 0; i < arguments.length; i++) {
+		console.log(arguments[i]);
+	}
+} : function() {};
+this.cssFix.fixVer = 6;
+this.cssFix.preFixClass('bs_');
+$(function() {
+	var progressing;
+	function beautify() {
+		if (progressing) return;
+		progressing = true;
+		var text = $('#source').val();
+		log(cssFix.cssParse(text));
+		$('#fixStyle').val(cssFix.getFixStyle());
+		$('#fixScript').val(cssFix.getFixScript());
+		progressing = false;
+	}
+    $('#source').bind('keydown', function (e) {
+        if (e.ctrlKey && e.keyCode == 13) {
+            beautify();
+        }
+    })
+    $('#submit').bind('click', beautify);
+    beautify();
+});
+</script>
+</head>
+<body>
+    <div id="beauty">
+        <button id="submit"><strong>Fix Browser CSS Compatibility</strong> <em>(ctrl-enter)</em></button>
+        <h3>Source Style</h3>
+        <fieldset class="textarea-wrap">
+            <textarea id="source"></textarea>
+        </fieldset>
+        <h3>fixed Style</h3>
+        <fieldset class="textarea-wrap">
+            <textarea id="fixStyle"></textarea>
+        </fieldset>
+        <h3>fixed Script</h3>
+        <fieldset class="textarea-wrap">
+            <textarea id="fixScript"></textarea>
+        </fieldset>
+
+    </div>
+</body></html>
